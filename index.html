@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Image data reader </title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
     <style>
         img
         {
@@ -98,9 +98,9 @@ function getExif()
                     console.log(lonFinal);
                 
                    
-                document.getElementById('map-link').src = '//maps.google.com/maps?q='+latFinal+","+lonFinal+'&iwloc=&output=embed';
+                document.getElementById('map-link').src = 'https://maps.google.com/maps?q='+latFinal+","+lonFinal+'&iwloc=&output=embed';
                   
-                 document.getElementById('full-map').innerHTML = '<a href="//www.google.com/maps/place/'+latFinal+','+lonFinal+' " target="_blank" id="map">Full Google Map</a>';      
+                 document.getElementById('full-map').innerHTML = '<a href="https://www.google.com/maps/place/'+latFinal+','+lonFinal+' " target="_blank" id="map">Full Google Map</a>';      
                 
                 }
                 else
@@ -124,11 +124,14 @@ function getExif()
     
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script async defer src="https//maps.googleapis.com/maps/api/js?key=AIzaSyDalbT-jOOmBA5Bib-z8_E3vGK9-qxH43M&callback=getExif&libraries=places"
+<script type="text/javascript" src="Scripts/exif.min.js"></script>
+
+<script type="text/javascript" src="Scripts/jquery.js"></script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDalbT-jOOmBA5Bib-z8_E3vGK9-qxH43M&callback=getExif&libraries=places"
 type="text/javascript"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="favico.js"></script>
+
+<script type="text/javascript" src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/Scripts/favico.js"></script>
 </body>
 </html>
