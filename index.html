@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Image data reader </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        img
+        {
+            align-self: auto;
+            max-width: 200px;
+            height: 200px;
+        }
+        h2{
+            text-align: center;
+        }
+        #map-link { 
+        height: 500px; 
+        width: 100%; 
+       } 
+       #map{
+            height: 500px; 
+            width: 100%; 
+       }
+    </style>
+</head>
+<body >
+    <p><h2><b>Image Data Reader</b></h2></p>
+    <div class="container">
+        <div class="row">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <div class="col"style="float:left; width:50%; margin-left:10px;">   
+                <p><b>Click Image To Get Efix Data of Image</b></p> 
+                <input type="file"  id="imgload"  >          
+                <img src="#" id="img1">
+                <p><b>All Metadata Info Of Your Files in JavaScript Object Notation (JSON) Format</b></p>
+                <pre id="allMetaDataSpan"></pre>
+            </div>    
+            <div class="col"style="float:left; width:50%; margin-left:10px;"> 
+                <iframe id="map-link" src="https://www.google.com/maps/embed?api=1&origin=Space+Needle+Seattle+WA&destination=Pike+Place+Market+Seattle+WA&travelmode=bicycling"> </iframe>  
+                <p id="full-map"></p>
+                <div id="map"></div>    
+            </div>
+        </div>
+    </div>
+    <br/>
+      
+<script>
+$('document').ready(function () 
+{
+    $("#imgload").change(function () 
+    {
+        if (this.files && this.files[0]) 
+        {
+            var reader = new FileReader();
+            reader.onload = function (e) 
+            {
+                $('#img1').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+//window.onload = getExif;
+function getExif() 
+{
+    document.getElementById("img1").onclick = function() 
+    {   
+        var img = document.getElementById("img1");
+        EXIF.getData(img, function()
+        {
+            var allMetaData = EXIF.getAllTags(this);
+            var allMetaDataSpan = document.getElementById("allMetaDataSpan");
+            allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
+
+                var allMetaData = EXIF.getAllTags(this);
+                if(allMetaData.GPSLatitude && allMetaData.GPSLongitude != null)
+                {
+                    myData = this;
+                    // Calculate latitude decimal
+                    var latDegree = myData.exifdata.GPSLatitude[0].numerator;
+                    var latMinute = myData.exifdata.GPSLatitude[1].numerator;
+                    var latSecond = myData.exifdata.GPSLatitude[2].numerator;
+                    var latDirection = myData.exifdata.GPSLatitudeRef;
+                    
+                    var latFinal = ConvertDMSToDD(latDegree, latMinute, latSecond, latDirection);
+                    console.log(latFinal);
+
+                    // Calculate longitude decimal
+                    var lonDegree = myData.exifdata.GPSLongitude[0].numerator;
+                    var lonMinute = myData.exifdata.GPSLongitude[1].numerator;
+                    var lonSecond = myData.exifdata.GPSLongitude[2].numerator;
+                    var lonDirection = myData.exifdata.GPSLongitudeRef;
+
+                    var lonFinal = ConvertDMSToDD(lonDegree, lonMinute, lonSecond, lonDirection);
+                    console.log(lonFinal);
+                
+                   
+                document.getElementById('map-link').src = 'https://maps.google.com/maps?q='+latFinal+","+lonFinal+'&iwloc=&output=embed';
+                  
+                 document.getElementById('full-map').innerHTML = '<a href="http://www.google.com/maps/place/'+latFinal+','+lonFinal+' " target="_blank" id="map">Full Google Map</a>';      
+                
+                }
+                else
+                {
+                    document.getElementById('full-map').innerHTML = "<b>Image Does Not Contain Latitude And Longitude</b>";
+                }
+        });
+    }
+}
+
+  function ConvertDMSToDD(degrees, minutes, seconds, direction) 
+  {
+
+    var dd = degrees + (minutes/60) + (seconds/3600);
+    if (direction == "S" || direction == "W") 
+    {
+        dd = dd * -1; 
+    }
+    return dd;
+  }
+    
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDalbT-jOOmBA5Bib-z8_E3vGK9-qxH43M&callback=getExif&libraries=places"
+type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="favico.js"></script>
+</body>
+</html>
